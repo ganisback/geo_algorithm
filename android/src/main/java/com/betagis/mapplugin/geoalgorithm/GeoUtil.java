@@ -44,7 +44,7 @@ public class GeoUtil {
             coordinates2.add(new Coordinate(Double.valueOf(coordinate.get(0)),Double.valueOf(coordinate.get(1))));
         }
         Polygon poly = new GeometryFactory().createPolygon(coordinates1.toArray(new Coordinate[0]));
-        Polygon line = new GeometryFactory().createPolygon(coordinates2.toArray(new Coordinate[0]));
+        Geometry line = new GeometryFactory().createLineString(coordinates2.toArray(new Coordinate[0]));
 
 
 
