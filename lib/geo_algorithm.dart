@@ -15,4 +15,10 @@ class GeoAlgorithm {
         await _channel.invokeMethod('getUnionPolygon', [p1, p2]);
     return union;
   }
+
+  static Future<dynamic> dissolvePolygon(dynamic p1, dynamic p2) async {
+    final dynamic polys =
+        await _channel.invokeMethod('dissolvePolygon', [p1, p2]);
+    return polys;
+  }
 }

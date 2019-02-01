@@ -28,6 +28,12 @@ public class GeoAlgorithmPlugin implements MethodCallHandler {
       ArrayList<List<Double>> args0 = (ArrayList<List<Double>>) args.get(0);
       ArrayList<List<Double>> args1 = (ArrayList<List<Double>>) args.get(1);
       result.success(GeoUtil.getUnion(args0,args1));
+    } else if (call.method.equals("dissolvePolygon")) {
+
+      List args = (List)call.arguments;
+      ArrayList<List<Double>> args0 = (ArrayList<List<Double>>) args.get(0);
+      ArrayList<List<Double>> args1 = (ArrayList<List<Double>>) args.get(1);
+      result.success(GeoUtil.getDissolvePolygon(args0,args1));
     } else {
       result.notImplemented();
     }
