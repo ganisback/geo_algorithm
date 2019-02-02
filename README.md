@@ -1,6 +1,6 @@
 # geo_algorithm
 
-A new flutter plugin project.
+Support polygon union and dissolve, other algorithm will add soon.
 
 ## Getting Started
 
