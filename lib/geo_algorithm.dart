@@ -28,7 +28,12 @@ class GeoAlgorithm {
       wkt2 += "))";
       args = [wkt, wkt2];
       String unionStr = await _channel.invokeMethod('getUnionPolygon', args);
-      unionStr = unionStr.replaceAll("POLYGON ((", "").replaceAll("))", "");
+      unionStr = unionStr
+          .replaceAll("POLYGON ((", "")
+          .replaceAll("))", "")
+          .replaceAll("MULTI(", "")
+          .replaceAll("((", "")
+          .replaceAll(")", "");
       List union = [];
       for (String pointStr in unionStr.split(",")) {
         List point = pointStr.trim().split(" ");
