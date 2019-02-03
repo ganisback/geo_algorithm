@@ -27,9 +27,19 @@ class GeoAlgorithm {
       wkt2 = wkt2.substring(0, wkt2.length - 1);
       wkt2 += "))";
       args = [wkt, wkt2];
+      String unionStr = await _channel.invokeMethod('getUnionPolygon', args);
+      unionStr = unionStr.replaceAll("POLYGON ((", "").replaceAll("))", "");
+      List union = [];
+      for (String pointStr in unionStr.split(",")) {
+        List point = pointStr.trim().split(" ");
+        union.add([point[0], point[1]]);
+      }
+      return union;
+    } else {
+      final dynamic union =
+          await _channel.invokeMethod('getUnionPolygon', args);
+      return union;
     }
-    final dynamic union = await _channel.invokeMethod('getUnionPolygon', args);
-    return union;
   }
 
   static Future<dynamic> dissolvePolygon(dynamic p1, dynamic p2) async {
