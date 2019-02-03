@@ -72,6 +72,28 @@ public class GeoUtil {
 
     }
 
+    public static Boolean checkIntersects(ArrayList<List<Double>> polygons0,ArrayList<List<Double>> polygons1){
+
+        List<Coordinate> coordinates1 = new ArrayList<>();
+        List<Coordinate> coordinates2= new ArrayList<>();
+        for(List<Double> coordinate:polygons0){
+            coordinates1.add(new Coordinate(Double.valueOf(coordinate.get(0)),Double.valueOf(coordinate.get(1))));
+        }
+        for(List<Double> coordinate:polygons1){
+            coordinates2.add(new Coordinate(Double.valueOf(coordinate.get(0)),Double.valueOf(coordinate.get(1))));
+        }
+        Polygon poly1 = new GeometryFactory().createPolygon(coordinates1.toArray(new Coordinate[0]));
+        Geometry block2;
+        if(coordinates2.size()==2){
+            block2 = new GeometryFactory().createLineString(coordinates2.toArray(new Coordinate[0]));
+        }else{
+            block2 = new GeometryFactory().createPolygon(coordinates2.toArray(new Coordinate[0]));
+        }
+
+        return poly1.intersects(block2);
+
+    }
+
     public static Geometry polygonize(Geometry geometry) {
         List lines = LineStringExtracter.getLines(geometry);
         Polygonizer polygonizer = new Polygonizer();

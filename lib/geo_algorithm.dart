@@ -50,8 +50,55 @@ class GeoAlgorithm {
   }
 
   static Future<dynamic> dissolvePolygon(dynamic p1, dynamic p2) async {
-    final dynamic polys =
-        await _channel.invokeMethod('dissolvePolygon', [p1, p2]);
-    return polys;
+    if (Platform.isIOS) {
+      String wkt = "POLYGON((";
+      for (dynamic p in p1) {
+        wkt += p[0].toString() + " " + p[1].toString() + ",";
+      }
+      wkt = wkt.substring(0, wkt.length - 1);
+      wkt += "))";
+      String wkt2 = "LINESTRING((";
+      for (dynamic p in p1) {
+        wkt += p[0].toString() + " " + p[1].toString() + ",";
+      }
+      wkt = wkt.substring(0, wkt.length - 1);
+      wkt += "))";
+      List args = [wkt, wkt2];
+      String unionStr = await _channel.invokeMethod('dissolvePolygon', args);
+      print(unionStr);
+    } else {
+      final dynamic polys =
+          await _channel.invokeMethod('dissolvePolygon', [p1, p2]);
+      return polys;
+    }
+  }
+
+  static Future<bool> checkIntersects(
+      dynamic p1, dynamic p2, bool isPolygon) async {
+    if (Platform.isIOS) {
+      List args = [];
+      String wkt = "POLYGON((";
+      for (dynamic p in p1) {
+        wkt += p[0].toString() + " " + p[1].toString() + ",";
+      }
+      wkt = wkt.substring(0, wkt.length - 1);
+      wkt += "))";
+      String wkt2 = "POLYGON((";
+      if (!isPolygon) {
+        wkt2 = "LINESTRING((";
+      }
+      for (dynamic p in p2) {
+        wkt2 += p[0].toString() + " " + p[1].toString() + ",";
+      }
+      wkt2 = wkt2.substring(0, wkt2.length - 1);
+      wkt2 += "))";
+      args = [wkt, wkt2];
+      String unionStr = await _channel.invokeMethod('checkIntersects', args);
+      return unionStr == 'true' ? true : false;
+    } else {
+      final bool isIntersects =
+          await _channel.invokeMethod('dissolvePolygon', [p1, p2]);
+      return isIntersects;
+    }
   }
 }

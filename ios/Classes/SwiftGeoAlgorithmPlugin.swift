@@ -19,7 +19,19 @@ public class SwiftGeoAlgorithmPlugin: NSObject, FlutterPlugin {
         result(newpolygon?.WKT);
         return;
     }else if(call.method == "dissolvePolygon"){
-        print(call.arguments as Any);
+        let wkt: Array<String>? = call.arguments as? Array;
+        let polygon1 = Geometry.create((wkt?[0])!);
+        let line2 = Geometry.create((wkt?[1])!);
+        let polys = polygon1?.boundary()?.union(line2!);
+        polys?.intersects(<#T##geometry: Geometry##Geometry#>)
+        print(polys?.WKT);
+        return;
+    }else if(call.method == "checkIntersects"){
+        let wkt: Array<String>? = call.arguments as? Array;
+        let polygon1 = Geometry.create((wkt?[0])!);
+        let block2 = Geometry.create((wkt?[1])!);
+        result(polygon1?.intersects(block2!));
+        return;
     }
   }
 }
