@@ -32,7 +32,9 @@ class GeoAlgorithm {
       List union = [];
       for (String pointStr in unionStr.split(",")) {
         List point = pointStr.trim().split(" ");
-        union.add([double.parse(point[0]), double.parse(point[1])]);
+        double p1 = double.parse(point[0]);
+        double p2 = double.parse(point[1]);
+        union.add([p1, p2]);
       }
       return union;
     } else {
