@@ -22,8 +22,9 @@ public class SwiftGeoAlgorithmPlugin: NSObject, FlutterPlugin {
         let wkt: Array<String>? = call.arguments as? Array;
         let polygon1 = Geometry.create((wkt?[0])!);
         let line2 = Geometry.create((wkt?[1])!);
-        let polys = polygon1?.boundary()?.union(line2!);
+        let polys = polygon1?.union(line2!);
         //polys?.intersects(T##geometry: Geometry##Geometry)
+        print(polygon1?.WKT);
         print(polys?.WKT);
         return;
     }else if(call.method == "checkIntersects"){

@@ -57,15 +57,15 @@ class GeoAlgorithm {
       }
       wkt = wkt.substring(0, wkt.length - 1);
       wkt += "))";
-      String wkt2 = "LINESTRING((";
-      for (dynamic p in p1) {
-        wkt += p[0].toString() + " " + p[1].toString() + ",";
+      String wkt2 = "LINESTRING(";
+      for (dynamic p in p2) {
+        wkt2 += p[0].toString() + " " + p[1].toString() + ",";
       }
-      wkt = wkt.substring(0, wkt.length - 1);
-      wkt += "))";
+      wkt2 = wkt2.substring(0, wkt2.length - 1);
+      wkt2 += ")";
       List args = [wkt, wkt2];
       String unionStr = await _channel.invokeMethod('dissolvePolygon', args);
-      print(unionStr);
+      return unionStr;
     } else {
       final dynamic polys =
           await _channel.invokeMethod('dissolvePolygon', [p1, p2]);

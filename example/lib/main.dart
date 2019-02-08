@@ -12,36 +12,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-    getUnionPolygon();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await GeoAlgorithm.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
-
-  Future<void> getUnionPolygon() async {
+  Future<void> union() async {
     dynamic p1 = [
       [61.0, 68.0],
       [145.0, 122.0],
@@ -66,6 +42,27 @@ class _MyAppState extends State<MyApp> {
     print(union);
   }
 
+  Future<void> dissolve() async {
+    dynamic p1 = [
+      [61.0, 68.0],
+      [145.0, 122.0],
+      [186.0, 94.0],
+      [224.0, 135.0],
+      [204.0, 211.0],
+      [105.0, 200.0],
+      [141.0, 163.0],
+      [48.0, 139.0],
+      [74.0, 117.0],
+      [61.0, 68.0],
+    ];
+    dynamic p2 = [
+      [105.0, 200.0],
+      [48.0, 139.0],
+    ];
+    dynamic result = await GeoAlgorithm.dissolvePolygon(p1, p2);
+    print(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -74,7 +71,18 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            children: <Widget>[
+              FlatButton(
+                child: Text("合并"),
+                onPressed: () => union(),
+              ),
+              FlatButton(
+                child: Text("分割"),
+                onPressed: () => dissolve(),
+              )
+            ],
+          ),
         ),
       ),
     );
