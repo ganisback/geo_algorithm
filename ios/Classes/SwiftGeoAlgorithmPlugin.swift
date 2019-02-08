@@ -2,6 +2,7 @@ import Flutter
 import UIKit
 import GEOSwift
 import MapKit
+import Foundation
 
 public class SwiftGeoAlgorithmPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -23,9 +24,9 @@ public class SwiftGeoAlgorithmPlugin: NSObject, FlutterPlugin {
         let polygon1 = Geometry.create((wkt?[0])!);
         let line2 = Geometry.create((wkt?[1])!);
         let polys = polygon1?.union(line2!);
-        //polys?.intersects(T##geometry: Geometry##Geometry)
-        print(polygon1?.WKT);
         print(polys?.WKT);
+        print(polys?.unaryUnion()?.WKT);
+        
         return;
     }else if(call.method == "checkIntersects"){
         let wkt: Array<String>? = call.arguments as? Array;
