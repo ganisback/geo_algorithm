@@ -65,7 +65,24 @@ class GeoAlgorithm {
       wkt2 += ")";
       List args = [wkt, wkt2];
       String unionStr = await _channel.invokeMethod('dissolvePolygon', args);
-      return unionStr;
+      unionStr = unionStr
+          .replaceAll("GEOMETRYCOLLECTION (POLYGON ((", "")
+          .replaceAll(")),", "")
+          .replaceAll("((", "")
+          .replaceAll(")))", "");
+      List polys = [];
+      for (String polyStr in unionStr.split("POLYGON")) {
+        List points = polyStr.trim().split(",");
+        List poly = [];
+        for (String pointStr in points) {
+          List point = pointStr.trim().split(" ");
+          double p1 = double.parse(point[0]);
+          double p2 = double.parse(point[1]);
+          poly.add([p1, p2]);
+        }
+        polys.add(poly);
+      }
+      return polys;
     } else {
       final dynamic polys =
           await _channel.invokeMethod('dissolvePolygon', [p1, p2]);
