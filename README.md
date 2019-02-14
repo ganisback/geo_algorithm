@@ -1,6 +1,6 @@
 # geo_algorithm
 
-Support polygon union and dissolve, other algorithm will add soon.
+Support polygon union and dissolve, other algorithm will add soon. 
 
 ## Getting Started
 
